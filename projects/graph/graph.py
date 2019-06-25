@@ -11,32 +11,66 @@ class Graph:
         self.vertices = {}
 
     def add_vertex(self, vertex):
-        self.vertices[vertex] = {}
+        self.vertices[vertex] = set()
 
     def add_edge(self, v1, v2):
         self.vertices[v1].add(v2)
 
     def bft(self, starting_vertex):
-        """
-        Print each vertex in breadth-first order
-        beginning from starting_vertex.
-        """
-        pass  # TODO
+        printed_traversal = ""
+        viewed = {}
+        for vert in self.vertices:
+            viewed[vert] = "white"
+
+        viewed[starting_vertex] = "gray"
+        queue = Queue()
+        queue.enqueue(starting_vertex)
+
+        while len(queue.queue) > 0:
+            head = queue.queue[0]
+            for vert in self.vertices[head]:
+                if viewed[vert] == "white":
+                    viewed[vert] = "gray"
+                    queue.enqueue(vert)
+            comma = ", " if printed_traversal != "" else ""
+            printed_traversal += comma + str(queue.dequeue())
+            viewed[head] = 'black'
+        print(printed_traversal)
 
     def dft(self, starting_vertex):
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-        """
-        pass  # TODO
+        printed_traversal = ''
+        viewed = {}
+        for vert in self.vertices:
+            viewed[vert] = False
+
+        stack = Stack()
+        stack.push(starting_vertex)
+        viewed[starting_vertex] = True
+
+        while len(stack.stack) > 0:
+            tail = stack.pop()
+            comma = ", " if printed_traversal != "" else ""
+            printed_traversal += comma + str(tail)
+
+            for vert in self.vertices[tail]:
+                if not viewed[vert]:
+                    viewed[vert] = True
+                    stack.push(vert)
+
+        print(printed_traversal)
+
 
     def dft_recursive(self, starting_vertex):
-        """
-        Print each vertex in depth-first order
-        beginning from starting_vertex.
-        This should be done using recursion.
-        """
-        pass  # TODO
+        printed_traversal = ''
+
+        viewed = {}
+        for vert in self.vertices:
+            viewed[vert] = True if vert == starting_vertex else False
+
+        def recursion(self, vertex):
+            for vert in self.vertices[vertex]:
+                if not viewed[vert]:
+                    pass
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -115,17 +149,17 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft_recursive(1)
+    # graph.dft_recursive(1)
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    print(graph.dfs(1, 6))
+    # print(graph.dfs(1, 6))
