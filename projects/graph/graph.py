@@ -59,26 +59,35 @@ class Graph:
 
         print(printed_traversal)
 
-
     def dft_recursive(self, starting_vertex):
-        printed_traversal = ''
+        # printed_traversal = ''
 
-        viewed = {}
-        for vert in self.vertices:
-            viewed[vert] = True if vert == starting_vertex else False
+        # viewed = {}
+        # for vert in self.vertices:
+        #     viewed[vert] = True if vert == starting_vertex else False
 
-        def recursion(self, vertex):
-            for vert in self.vertices[vertex]:
-                if not viewed[vert]:
-                    pass
+        # def recursion(self, vertex):
+        #     for vert in self.vertices[vertex]:
+        #         if not viewed[vert]:
+        #             viewed[vert] = True
+        #             self.recursion(vert)
+        pass
 
     def bfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing the shortest path from
-        starting_vertex to destination_vertex in
-        breath-first order.
-        """
-        pass  # TODO
+        visited_paths = {}
+        queue = Queue()
+        queue.enqueue([starting_vertex])
+        while not destination_vertex in visited_paths:
+            curr_path = queue.dequeue()
+            curr_node = curr_path[-1]
+            if curr_node not in visited_paths:
+                visited_paths[curr_node] = curr_path
+                for vert in self.vertices[curr_node]:
+                    if vert not in visited_paths:
+                        new_path = list(curr_path)
+                        new_path.append(vert)
+                        queue.enqueue(new_path)
+        return visited_paths[destination_vertex]
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -149,17 +158,17 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    # graph.dft_recursive(1)
+    graph.dft_recursive(1)
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
