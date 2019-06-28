@@ -87,6 +87,8 @@ class Graph:
                         new_path = list(curr_path)
                         new_path.append(vert)
                         queue.enqueue(new_path)
+            if len(self.vertices) == len(visited_paths) and destination_vertex not in visited_paths:
+              visited_paths[destination_vertex] = None
         return visited_paths[destination_vertex]
 
     def dfs(self, starting_vertex, destination_vertex):
