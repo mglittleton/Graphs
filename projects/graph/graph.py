@@ -47,7 +47,7 @@ class Graph:
         stack.push(starting_vertex)
         viewed[starting_vertex] = True
 
-        while len(stack.stack) > 0:
+        while stack.size() > 0:
             tail = stack.pop()
             comma = ", " if printed_traversal != "" else ""
             printed_traversal += comma + str(tail)
@@ -59,19 +59,16 @@ class Graph:
 
         print(printed_traversal)
 
-    def dft_recursive(self, starting_vertex):
-        # printed_traversal = ''
+    def dft_recursive(self, starting_vertex, visited = None):
 
-        # viewed = {}
-        # for vert in self.vertices:
-        #     viewed[vert] = True if vert == starting_vertex else False
+        if visited is None:
+          visited = []
+        visited.append(starting_vertex)
+        for vert in self.vertices[starting_vertex]:
+          if vert not in visited:
+            self.dft_recursive(vert, visited)
 
-        # def recursion(self, vertex):
-        #     for vert in self.vertices[vertex]:
-        #         if not viewed[vert]:
-        #             viewed[vert] = True
-        #             self.recursion(vert)
-        pass
+        return visited
 
     def bfs(self, starting_vertex, destination_vertex):
         visited_paths = {}
@@ -92,12 +89,33 @@ class Graph:
         return visited_paths[destination_vertex]
 
     def dfs(self, starting_vertex, destination_vertex):
-        """
-        Return a list containing a path from
-        starting_vertex to destination_vertex in
-        depth-first order.
-        """
-        pass  # TODO
+      visited = {}
+      returned_path = None
+      for vert in self.vertices:
+        visited[vert] = False
+
+
+      def dfs_recurs(start, dest, visited, path):
+
+        nonlocal returned_path
+        visited[start] = True
+        path.append(start)
+
+        if start is dest:
+          print(path)
+          if returned_path is not None:
+            returned_path = path
+        else:
+          for vert in self.vertices[start]:
+            if not visited[vert]:
+              dfs_recurs(vert, dest, visited, path)
+
+        path.pop()
+        visited[start] = False
+
+      dfs_recurs(starting_vertex, destination_vertex, visited, [])
+
+      return returned_path
 
 
 if __name__ == '__main__':
@@ -134,7 +152,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft(1)
+    # graph.dft(1)
 
     '''
     Valid BFT paths:
@@ -151,7 +169,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    # graph.bft(1)
 
     '''
     Valid DFT recursive paths:
@@ -160,17 +178,17 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft_recursive(1)
+    # print(graph.dft_recursive(1))
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    print(graph.bfs(1, 6))
+    # print(graph.bfs(1, 6))
 
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    print(graph.dfs(1, 6))
+    graph.dfs(1, 6)
